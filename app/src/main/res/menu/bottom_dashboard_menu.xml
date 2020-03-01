@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_dashboard_24"
+        android:title="Beranda" />
+
+    <item
+        android:id="@+id/nav_riwayat"
+        android:icon="@drawable/ic_history_24"
+        android:title="History" />
+
+    <item
+        android:id="@+id/nav_saldo"
+        android:icon="@drawable/ic_attach_money_24"
+        android:title="Saldo" />
+
+    <item
+        android:id="@+id/nav_akun"
+        android:icon="@drawable/ic_account_circle_24"
+        android:title="Akun" />
+
+</menu>
