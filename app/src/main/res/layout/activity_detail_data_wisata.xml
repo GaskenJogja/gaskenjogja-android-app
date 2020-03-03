@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/asap"
                         android:text="Nama Wisata"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 

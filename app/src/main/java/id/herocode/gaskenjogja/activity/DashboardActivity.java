@@ -80,6 +80,7 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
         setSupportActionBar(toolbar);
 
         item = findViewById(R.id.akses_lokasi);
+        this.item.setVisibility(View.GONE);
 
         bottomNav = findViewById(R.id.bottom_navigation_menu);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -191,7 +192,8 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
                     }
                 }.execute();
 
-                item.setVisibility(View.VISIBLE);
+//                item.setVisibility(View.VISIBLE);
+
 //                Toast.makeText(DashboardActivity.this, "Lokasi Tersimpan!", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();

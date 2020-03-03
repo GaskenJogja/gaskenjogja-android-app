@@ -2,7 +2,7 @@ package id.herocode.gaskenjogja.utils;
 
 public class AppConstants {
     public class ServiceType {
-        private static final String BASE_URL = "https://www.herocode.my.id/api/";
+        private static final String BASE_URL = "https://www.herocode.my.id/api/api-app-mobile/";
         public static final String LOGIN = BASE_URL + "login.php";
         public static final String REGISTER = BASE_URL + "daftar.php";
         public static final String DATA_WISATA = BASE_URL + "data_wisata.php";
@@ -12,9 +12,11 @@ public class AppConstants {
         public static final String LOKASI = BASE_URL + "android_update_lokasi.php";
         public static final String TRANSAKSI = BASE_URL + "riwayatTransaksi.php";
         public static final String LOKASI_TERDEKAT = BASE_URL + "android_lokasi_terdekat.php";
+        public static final String MERCHANT_BASE_CHECKOUT_URL = BASE_URL + "api-midtrans/auth-midtrans.php/";
     }
 
     public class Params {
+        public static final String MERCHANT_CLIENT_KEY = "\"SB-Mid-client-NjBwrGQWQNbDrpiy\"";
         public static final String NAME = "nama";
         public static final String EMAIL = "email";
         public static final String PASSWORD = "password";

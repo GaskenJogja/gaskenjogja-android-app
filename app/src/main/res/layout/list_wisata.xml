@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutAnimation="@anim/layout_item_fall_down_anim"
     card_view:cardCornerRadius="6dp"
     card_view:cardElevation="6dp"
     card_view:cardUseCompatPadding="true">
@@ -131,12 +130,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:background="@drawable/selector_button_secondary"
+                android:background="@drawable/selector_button_three"
                 android:fontFamily="@font/asap"
                 android:text="Lihat Detail Wisata"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

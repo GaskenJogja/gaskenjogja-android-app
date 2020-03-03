@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Gasken Jogja</string>
-    <string name="title_activity_maps">Lokasi Wisata</string>
-    <string name="title_activity_detail_data_wisata">Map</string>
-    <string name="title_activity_wisata_terdekat">Lokasi Wisata Terdekat</string>
-</resources>

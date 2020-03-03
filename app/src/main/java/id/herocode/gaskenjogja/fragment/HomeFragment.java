@@ -124,6 +124,8 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
         refreshSaldo = view.findViewById(R.id.btn_refresh);
         img_refresh = view.findViewById(R.id.img_refresh);
 
+        refreshSaldo.setVisibility(View.GONE);
+
         tv_username.setText("Hai " + name);
         tv_email.setText(email);
         tv_saldo.setText("Rp. " + saldo + ",-");
@@ -218,18 +220,19 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
     }
 
     public void update() {
-        final RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(200);
-        rotate.setInterpolator(new LinearInterpolator());
+//        final RotateAnimation rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//        rotate.setDuration(200);
+//        rotate.setInterpolator(new LinearInterpolator());
         saldo = String.valueOf(preferenceHelper.getSaldo());
-        img_refresh.startAnimation(rotate);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tv_saldo.setText(String.format("Rp. %s,-", saldo));
-                img_refresh.startAnimation(rotate);
-            }
-        }, 500);
+        tv_saldo.setText(String.format("Rp. %s,-", saldo));
+//        img_refresh.startAnimation(rotate);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                tv_saldo.setText(String.format("Rp. %s,-", saldo));
+//                img_refresh.startAnimation(rotate);
+//            }
+//        }, 500);
     }
 
     @Override
@@ -271,6 +274,7 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
     }
 
     private void loadDataWisata() {
+        intListener.updateSaldo();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, API_DATA_WISATA,
                 new Response.Listener<String>() {
                     @Override
@@ -279,7 +283,7 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
                             modelWisatas.clear();
                             JSONObject obj = new JSONObject(response);
                             JSONArray array = obj.getJSONArray("data");
-                            for (int i = 0; i < array.length(); i++) {
+                            for (int i = 0; i < 3; i++) {
                                 JSONObject wisata = array.getJSONObject(i);
                                 modelWisatas.add(new ModelWisata(
                                         wisata.getInt("id_wisata"),
