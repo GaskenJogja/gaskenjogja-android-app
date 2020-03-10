@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         android:orientation="horizontal">
 
 <!--        <Button-->
@@ -36,7 +36,7 @@
             android:id="@+id/btn_booking"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
@@ -77,8 +77,10 @@
                     tools:src="@drawable/bg_wisata_jogja" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="6dp"
@@ -86,23 +88,56 @@
                     android:layout_marginBottom="6dp"
                     android:background="@drawable/bg_menu_atas"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="6dp">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="6dp"
-                        app:srcCompat="@drawable/ic_pindrop_24" />
-
-                    <TextView
-                        android:id="@+id/nama_wisata"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/asap"
-                        android:text="Nama Wisata"
-                        android:textColor="@color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="6dp"
+                            app:srcCompat="@drawable/ic_pindrop_24" />
+
+                        <TextView
+                            android:id="@+id/nama_wisata"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/asap"
+                            android:text="Nama Wisata"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="6dp"
+                            app:srcCompat="@drawable/ic_time_24" />
+
+                        <TextView
+                            android:id="@+id/jam_op"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/asap"
+                            android:text="Jam Operasional"
+                            android:textColor="@color/faint_white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -115,7 +150,7 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/bg_permenu"
                 android:gravity="center"
-                android:padding="12dp"
+                android:padding="8dp"
                 android:text="Alamat: Disini" />
 
             <TextView
@@ -125,7 +160,7 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/bg_permenu"
                 android:gravity="center"
-                android:padding="12dp"
+                android:padding="8dp"
                 android:text="HTM Wisata: Rp. 000000,-" />
 
             <fragment

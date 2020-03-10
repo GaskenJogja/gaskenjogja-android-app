@@ -368,7 +368,7 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
                 deleteDir(dir);
             }
         } catch (Exception e) {
-            // TODO: handle exception
+
         }
     }
 

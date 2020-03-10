@@ -132,6 +132,7 @@ class PopupResultScan : DialogFragment() {
                 tv_label_harga.visibility = View.GONE
 
                 btn_konfirmasi.setOnClickListener{
+                    openGate()
                     dismiss()
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
@@ -151,6 +152,7 @@ class PopupResultScan : DialogFragment() {
                 }
                 btn_konfirmasi.setOnClickListener {
                     try {
+                        openGate()
                         bayarWisata()
                         dismiss()
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -183,6 +185,23 @@ class PopupResultScan : DialogFragment() {
                 }
 
             }
+//            4 -> {
+//                tv_title.text = "Wisata Tutup"
+//                tv_nama_wisata.text = NAMAWISATA
+//                tv_htm_wisata.visibility = View.GONE
+//                tv_saldo_awal.visibility = View.GONE
+//                tv_saldo_akhir.visibility = View.GONE
+//                btn_konfirmasi.visibility = View.GONE
+//                btn_kembali.visibility = View.VISIBLE
+//                btn_isi_saldo.visibility = View.GONE
+//                tv_label_saldo_akhir.visibility = View.GONE
+//                tv_label_saldo_awal.visibility = View.GONE
+//                tv_label_harga.visibility = View.GONE
+//
+//                btn_kembali.setOnClickListener{
+//                    dismiss()
+//                }
+//            }
             else -> {
                 dismiss()
             }
@@ -203,7 +222,7 @@ class PopupResultScan : DialogFragment() {
         map[AppConstants.Params.ID_WISATA] = IDWISATA.toString()
 
         object: AsyncTask<Void, Void, String>() {
-            protected override fun doInBackground(params: Array<Void>): String {
+            override fun doInBackground(params: Array<Void>): String {
                 var response : String?
                 try {
                     val req = HttpRequest(AppConstants.ServiceType.UPDATE_SALDO)
@@ -216,11 +235,37 @@ class PopupResultScan : DialogFragment() {
                 return response.toString()
             }
 
-            protected override fun onPostExecute(response: String) {
+            override fun onPostExecute(response: String) {
                 val isLogin: Boolean = preferenceHelper.isLogin
                 onTaskCompleted(response, isLogin)
             }
 
+        }.execute()
+    }
+
+    private fun openGate() {
+        val map2: HashMap<String, String> = HashMap()
+        map2[AppConstants.Params.ID_WISATA] = IDWISATA.toString()
+        map2[AppConstants.Params.KEY] = "gaskenjogja-wisata"
+
+        object: AsyncTask<Void, Void, String>() {
+            override fun doInBackground(vararg params: Void?): String {
+                var response: String?
+                try {
+                    val reqDes = HttpRequest(AppConstants.ServiceType.API_FIREBASE)
+                    response = reqDes.prepare(HttpRequest.Method.POST).withData(map2).sendAndReadString()
+                } catch (e : IOException) {
+                    response = e.message
+                } catch (e : Exception) {
+                    response = e.message
+                }
+                return response.toString()
+            }
+
+            override fun onPostExecute(result: String) {
+//                println("gaskenjogja-wisata : Sukses")
+                super.onPostExecute(result)
+            }
         }.execute()
     }
 

@@ -49,6 +49,8 @@ public class ParseContent {
                 return "saldo_kurang";
             } else if (jsonObject.optString(KEY_MSG).equals("qrcode_not_found")) {
                 return "not_found";
+            } else if (jsonObject.optString(KEY_MSG).equals("wisata_tutup")) {
+                return "tutup";
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -129,7 +129,7 @@ public class RiwayatFragment extends Fragment implements TransaksiInteraction {
                         transaksiList.add(new Transaksi(
                                 tr.getInt("id_transaksi"),
                                 tr.getString("tanggal_transaksi"),
-                                tr.getString("status_wisata"),
+                                tr.getString("status_transaksi"),
                                 tr.getString("pilih_metode"),
                                 tr.getString("nama_wisata")
                         ));

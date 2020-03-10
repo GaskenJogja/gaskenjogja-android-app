@@ -42,19 +42,20 @@ class QRCodeScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandle
     }
 
     override fun onBackPressed() {
-        scannerView.stopCamera()
         super.onBackPressed()
+        scannerView.stopCamera()
+        finish()
     }
 
     override fun onPause() {
-        scannerView.stopCamera()
         super.onPause()
+        scannerView.stopCamera()
     }
 
     override fun onStart() {
+        super.onStart()
         scannerView.startCamera()
         doRequestPermission()
-        super.onStart()
     }
 
     override fun onClick(view: View?) {
@@ -154,47 +155,52 @@ class QRCodeScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandle
 //                    Toast.makeText(this, "Saldo Kurang", Toast.LENGTH_SHORT).show()
                 }
                 "not_found" -> {
-                    Toast.makeText(this, "QRCode Not Found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "QRCode Tidak Ditemukan", Toast.LENGTH_SHORT).show()
 //                    Handler().postDelayed({
 //                        scannerView.resumeCameraPreview(this)
 //                        initScannerView()
 //                    },2000)
                 }
+                "tutup" -> {
+                    Toast.makeText(this, "Yahh:( Tempat wisata sedang tutup", Toast.LENGTH_LONG).show()
+//                    method = 4
+                }
                 else -> { }
             }
             if (method != 0) {
-                try {
-                    val obj = JSONObject(response)
-                    val data = obj.getJSONArray("data")
-                    val dataBundle = Bundle()
-                    for (i in 0 until data.length()) {
-                        val dataObj = data.getJSONObject(i)
-                        if  (method == 3) {
-                            preferenceHelper.putSaldo(obj.getInt("saldo"))
+                    try {
+                        val obj = JSONObject(response)
+                        val data = obj.getJSONArray("data")
+                        val dataBundle = Bundle()
+                        for (i in 0 until data.length()) {
+                            val dataObj = data.getJSONObject(i)
+                            if  (method == 3) {
+                                preferenceHelper.putSaldo(obj.getInt("saldo"))
+                            }
+                            dataBundle.apply {
+                                putInt("method", method)
+                                putString("nama_wisata", dataObj!!.getString("nama_wisata"))
+                                putInt("htm_wisata", dataObj.getString("harga").toInt())
+                                putString("img_wisata", dataObj.getString("gambar"))
+                                putInt("saldo", preferenceHelper.saldo)
+                                putInt("id_wisata", dataObj.getString("id_wisata").toInt())
+                            }
                         }
-                        dataBundle.apply {
-                            putInt("method", method)
-                            putString("nama_wisata", dataObj!!.getString("nama_wisata"))
-                            putInt("htm_wisata", dataObj.getString("harga").toInt())
-                            putString("img_wisata", dataObj.getString("gambar"))
-                            putInt("saldo", preferenceHelper.saldo)
-                            putInt("id_wisata", dataObj.getString("id_wisata").toInt())
-                        }
+                        val fm = supportFragmentManager
+                        val popupFragment =
+                            PopupResultScan.newInstance(
+                                dataBundle.getInt("method"),
+                                dataBundle.getString("nama_wisata")!!,
+                                dataBundle.getInt("htm_wisata"),
+                                dataBundle.getString("img_wisata")!!,
+                                dataBundle.getInt("saldo"),
+                                dataBundle.getInt("id_wisata")
+                            )
+                        popupFragment.show(fm, parseContent.getMessageQRCode(response))
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
                     }
-                    val fm = supportFragmentManager
-                    val popupFragment =
-                        PopupResultScan.newInstance(
-                            dataBundle.getInt("method"),
-                            dataBundle.getString("nama_wisata")!!,
-                            dataBundle.getInt("htm_wisata"),
-                            dataBundle.getString("img_wisata")!!,
-                            dataBundle.getInt("saldo"),
-                            dataBundle.getInt("id_wisata")
-                        )
-                    popupFragment.show(fm, parseContent.getMessageQRCode(response))
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
+
             }
         }
     }

@@ -116,12 +116,12 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
         etNominalSaldo = view.findViewById(R.id.et_tambah_saldo);
         radio_button = view.findViewById(R.id.radio_nominal);
         rg_nominal = view.findViewById(R.id.rg_nominal);
-        bottom_sheet = listener.findViewById(R.id.bottom_sheet);
-        sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        payment_bca = listener.findViewById(R.id.payment_bca);
-        payment_alfamart = listener.findViewById(R.id.payment_alfamart);
-        payment_gopay = listener.findViewById(R.id.payment_gopay);
+//        bottom_sheet = listener.findViewById(R.id.bottom_sheet);
+//        sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+//        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+//        payment_bca = listener.findViewById(R.id.payment_bca);
+//        payment_alfamart = listener.findViewById(R.id.payment_alfamart);
+//        payment_gopay = listener.findViewById(R.id.payment_gopay);
 
         saldo = String.valueOf(preferenceHelper.getSaldo());
         tvSaldo.setText(String.format("Rp. %s,-", saldo));
@@ -212,52 +212,52 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
             }
         });
 
-        payment_bca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
-                MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.BANK_TRANSFER_BCA);
-            }
-        });
+//        payment_bca.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
+//                MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.BANK_TRANSFER_BCA);
+//            }
+//        });
+//
+//        payment_alfamart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
+//                MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.GIFT_CARD_INDONESIA);
+//            }
+//        });
+//
+//        payment_gopay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
+//                MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.GO_PAY);
+//            }
+//        });
 
-        payment_alfamart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
-                MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.GIFT_CARD_INDONESIA);
-            }
-        });
-
-        payment_gopay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
-                MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.GO_PAY);
-            }
-        });
-
-        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        break;
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        break;
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        break;
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View view, float v) {
-
-            }
-        });
+//        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View view, int newState) {
+//                switch (newState) {
+//                    case BottomSheetBehavior.STATE_HIDDEN:
+//                        break;
+//                    case BottomSheetBehavior.STATE_EXPANDED:
+//                        break;
+//                    case BottomSheetBehavior.STATE_COLLAPSED:
+//                        break;
+//                    case BottomSheetBehavior.STATE_DRAGGING:
+//                        break;
+//                    case BottomSheetBehavior.STATE_SETTLING:
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View view, float v) {
+//
+//            }
+//        });
     }
 
     private CustomerDetails initCustomerDetails() {

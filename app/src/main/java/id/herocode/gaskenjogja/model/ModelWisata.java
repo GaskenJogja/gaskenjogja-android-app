@@ -7,15 +7,18 @@ public class ModelWisata {
     private int ID_WISATA;
     private String NAMA_WISATA;
     private String ALAMAT_WISATA;
+    private String JAM_BUKA, JAM_TUTUP;
     private int HARGA_WISATA;
     private byte[] IMG_WISATA;
     private Double LAT, LON;
     private boolean expanded = false;
 
-    public ModelWisata(int ID_WISATA, String NAMA_WISATA, String ALAMAT_WISATA, int HARGA_WISATA, String IMG_WISATA, Double lat, Double lon) {
+    public ModelWisata(int ID_WISATA, String NAMA_WISATA, String ALAMAT_WISATA, String JAM_BUKA, String JAM_TUTUP, int HARGA_WISATA, String IMG_WISATA, Double lat, Double lon) {
         this.ID_WISATA = ID_WISATA;
         this.NAMA_WISATA = NAMA_WISATA;
         this.ALAMAT_WISATA = ALAMAT_WISATA;
+        this.JAM_BUKA = JAM_BUKA;
+        this.JAM_TUTUP = JAM_TUTUP;
         this.HARGA_WISATA = HARGA_WISATA;
         this.IMG_WISATA = Base64.decode(IMG_WISATA, Base64.DEFAULT);
         this.LAT = lat;
@@ -32,6 +35,22 @@ public class ModelWisata {
 
     public String getALAMAT_WISATA() {
         return ALAMAT_WISATA;
+    }
+
+    public String getJAM_BUKA() {
+        return JAM_BUKA;
+    }
+
+    public void setJAM_BUKA(String JAM_BUKA) {
+        this.JAM_BUKA = JAM_BUKA;
+    }
+
+    public String getJAM_TUTUP() {
+        return JAM_TUTUP;
+    }
+
+    public void setJAM_TUTUP(String JAM_TUTUP) {
+        this.JAM_TUTUP = JAM_TUTUP;
     }
 
     public void setALAMAT_WISATA(String ALAMAT_WISATA) {

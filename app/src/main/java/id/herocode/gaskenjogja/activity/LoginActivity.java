@@ -38,13 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ImageView img_main = findViewById(R.id.img_main);
-        Glide
-                .with(this)
-                .load(R.drawable.bg_wisata_jogja)
-                .fitCenter()
-                .into(img_main);
-
         parseContent = new ParseContent(this);
         PreferenceHelper preferenceHelper = new PreferenceHelper(this);
 
@@ -54,6 +47,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         }
+
+        ImageView img_main = findViewById(R.id.img_main);
+        Glide
+                .with(this)
+                .load(R.drawable.bg_wisata_jogja)
+                .fitCenter()
+                .into(img_main);
 
         inp_email = findViewById(R.id.inp_email);
         inp_password = findViewById(R.id.inp_password);

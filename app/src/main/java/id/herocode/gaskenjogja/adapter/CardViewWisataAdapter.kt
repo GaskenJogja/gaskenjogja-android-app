@@ -11,8 +11,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideBuilder
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import id.herocode.gaskenjogja.R
@@ -52,6 +50,7 @@ class CardViewWisataAdapter(private val context: Context, wisata: List<ModelWisa
         holder.tvNamaWisata.text = wisata.namA_WISATA
         holder.tvAlamat.text = wisata.alamaT_WISATA
         holder.tvHtmWisata.text = "Rp. ${wisata.hargA_WISATA},-"
+        holder.tvJamOp.text = "${wisata.jaM_BUKA} - ${wisata.jaM_TUTUP}"
 
         if  (expanded) {
             expandItem(holder, true)
@@ -102,6 +101,7 @@ class CardViewWisataAdapter(private val context: Context, wisata: List<ModelWisa
         RecyclerView.ViewHolder(itemView) {
         val tvNamaWisata: TextView = itemView.findViewById(R.id.tv_namawisata)
         val tvAlamat: TextView = itemView.findViewById(R.id.tv_alamat)
+        val tvJamOp: TextView = itemView.findViewById(R.id.jam_operasional)
         val tvHtmWisata: TextView = itemView.findViewById(R.id.tv_htm_wisata)
         val imgWisata: ImageView = itemView.findViewById(R.id.img_wisata)
         val layoutDetail: LinearLayout = itemView.findViewById(R.id.layout_detail_item)

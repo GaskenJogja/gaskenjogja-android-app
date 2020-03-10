@@ -13,6 +13,7 @@ public class AppConstants {
         public static final String TRANSAKSI = BASE_URL + "riwayatTransaksi.php";
         public static final String LOKASI_TERDEKAT = BASE_URL + "android_lokasi_terdekat.php";
         public static final String MERCHANT_BASE_CHECKOUT_URL = BASE_URL + "api-midtrans/auth-midtrans.php/";
+        public static final String API_FIREBASE = "https://www.herocode.my.id/api/api-firebase/akses-wisata.php";
     }
 
     public class Params {
@@ -29,5 +30,6 @@ public class AppConstants {
         public static final String TGL_TRANSAKSI = "tanggal_transaksi";
         public static final String STATUS_WISATA = "status_wisata";
         public static final String RADIUS = "radius";
+        public static final String KEY = "key";
     }
 }

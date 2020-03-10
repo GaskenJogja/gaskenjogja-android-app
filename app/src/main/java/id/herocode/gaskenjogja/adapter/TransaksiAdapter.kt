@@ -32,7 +32,7 @@ class TransaksiAdapter(
         holder.idTransaksi.text = (position+1).toString()
         holder.transaksi_nama_wisata.text = transaksi.namaWisata
         holder.transaksi_status.text =
-            if (transaksi.statusWisata.equals("BELUM MASUK")) "Belum Terpakai"
+            if (transaksi.statusWisata.equals("BELUM TERPAKAI")) "Belum Terpakai"
             else "Terpakai"
         if (holder.transaksi_status.text.equals("Terpakai")) {
             holder.idTransaksi.setBackgroundColor(Color.rgb(229,57,53))

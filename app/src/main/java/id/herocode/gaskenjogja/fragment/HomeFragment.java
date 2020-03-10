@@ -65,6 +65,7 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
 
     private CardViewWisataAdapter wisataAdapter;
     private static final String API_DATA_WISATA = AppConstants.ServiceType.DATA_WISATA;
+    private static final String API_DATA_WISATA_SORT = AppConstants.ServiceType.DATA_WISATA + "?sort=true";
     private RecyclerView recyclerView;
     private List<ModelWisata> modelWisatas;
     private SwipeRefreshLayout swipe;
@@ -275,7 +276,7 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
 
     private void loadDataWisata() {
         intListener.updateSaldo();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API_DATA_WISATA,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, API_DATA_WISATA_SORT,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -283,12 +284,14 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
                             modelWisatas.clear();
                             JSONObject obj = new JSONObject(response);
                             JSONArray array = obj.getJSONArray("data");
-                            for (int i = 0; i < 3; i++) {
+                            for (int i = 0; i < array.length(); i++) {
                                 JSONObject wisata = array.getJSONObject(i);
                                 modelWisatas.add(new ModelWisata(
                                         wisata.getInt("id_wisata"),
                                         wisata.getString("nama_wisata"),
                                         wisata.getString("alamat"),
+                                        wisata.getString("jam_buka"),
+                                        wisata.getString("jam_tutup"),
                                         wisata.getInt("harga"),
                                         wisata.getString("gambar"),
                                         wisata.getDouble("lat"),
@@ -325,6 +328,8 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
         moveData.putExtra(DetailDataWisata.ID_WISATA, modelWisata.getID_WISATA());
         moveData.putExtra(DetailDataWisata.NAMA_WISATA, modelWisata.getNAMA_WISATA());
         moveData.putExtra(DetailDataWisata.ALAMAT_WISATA, modelWisata.getALAMAT_WISATA());
+        moveData.putExtra(DetailDataWisata.JAM_BUKA, modelWisata.getJAM_BUKA());
+        moveData.putExtra(DetailDataWisata.JAM_TUTUP, modelWisata.getJAM_TUTUP());
         moveData.putExtra(DetailDataWisata.HTM_WISATA, modelWisata.getHARGA_WISATA());
         moveData.putExtra(DetailDataWisata.IMG_WISATA, modelWisata.getIMG_WISATA());
         moveData.putExtra(DetailDataWisata.LAT, modelWisata.getLAT());

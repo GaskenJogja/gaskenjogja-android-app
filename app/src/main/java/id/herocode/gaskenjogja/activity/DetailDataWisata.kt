@@ -30,6 +30,8 @@ class DetailDataWisata : AppCompatActivity(), OnMapReadyCallback, View.OnClickLi
     private lateinit var mMap: GoogleMap
     private var idWisata: Int = 0
     private lateinit var namaWisata: String
+    private lateinit var jamBuka: String
+    private lateinit var jamTutup: String
     private lateinit var imgWisata: ByteArray
     private var htmWisata: Int = 0
     private lateinit var alamatWisata: String
@@ -42,6 +44,8 @@ class DetailDataWisata : AppCompatActivity(), OnMapReadyCallback, View.OnClickLi
         const val IMG_WISATA = "img_wisata"
         const val HTM_WISATA = "htm_wisata"
         const val ALAMAT_WISATA = "alamat_wisata"
+        const val JAM_BUKA = "jam_buka"
+        const val JAM_TUTUP = "jam_tutup"
         const val LAT = "lat"
         const val LON = "lon"
     }
@@ -67,6 +71,8 @@ class DetailDataWisata : AppCompatActivity(), OnMapReadyCallback, View.OnClickLi
         namaWisata = intent.getStringExtra(NAMA_WISATA)!!
         imgWisata = intent.getByteArrayExtra(IMG_WISATA)!!
         alamatWisata = intent.getStringExtra(ALAMAT_WISATA)!!
+        jamBuka = intent.getStringExtra(JAM_BUKA)!!
+        jamTutup = intent.getStringExtra(JAM_TUTUP)!!
         htmWisata = intent.getIntExtra(HTM_WISATA, 0)
         lat = intent.getDoubleExtra(LAT, 0.0)
         lon = intent.getDoubleExtra(LON, 0.0)
@@ -80,6 +86,7 @@ class DetailDataWisata : AppCompatActivity(), OnMapReadyCallback, View.OnClickLi
         nama_wisata.text = namaWisata
         alamat_wisata.text = "Alamat: $alamatWisata"
         htm_wisata.text = "HTM Wisata: Rp.$htmWisata,-"
+        jam_op.text = "${jamBuka} - ${jamTutup}"
 
         btn_booking.setOnClickListener(this)
     }

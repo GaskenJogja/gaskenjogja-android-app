@@ -52,6 +52,8 @@ class DaftarWisata : AppCompatActivity() {
                                 wisata.getInt("id_wisata"),
                                 wisata.getString("nama_wisata"),
                                 wisata.getString("alamat"),
+                                wisata.getString("jam_buka"),
+                                wisata.getString("jam_tutup"),
                                 wisata.getInt("harga"),
                                 wisata.getString("gambar"),
                                 wisata.getDouble("lat"),
@@ -80,6 +82,8 @@ class DaftarWisata : AppCompatActivity() {
         moveData.putExtra(DetailDataWisata.ID_WISATA, modelWisata.iD_WISATA)
         moveData.putExtra(DetailDataWisata.NAMA_WISATA, modelWisata.namA_WISATA)
         moveData.putExtra(DetailDataWisata.ALAMAT_WISATA, modelWisata.alamaT_WISATA)
+        moveData.putExtra(DetailDataWisata.JAM_BUKA, modelWisata.jaM_BUKA)
+        moveData.putExtra(DetailDataWisata.JAM_TUTUP, modelWisata.jaM_TUTUP)
         moveData.putExtra(DetailDataWisata.HTM_WISATA, modelWisata.hargA_WISATA)
         moveData.putExtra(DetailDataWisata.IMG_WISATA, modelWisata.imG_WISATA)
         moveData.putExtra(DetailDataWisata.LAT, modelWisata.lat)
