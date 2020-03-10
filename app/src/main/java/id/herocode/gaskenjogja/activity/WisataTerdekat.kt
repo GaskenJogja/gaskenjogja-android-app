@@ -41,19 +41,17 @@ class WisataTerdekat : AppCompatActivity(), OnMapReadyCallback, View.OnClickList
         radius_2km.setOnClickListener(this)
         radius_5km.setOnClickListener(this)
         radius_10km.setOnClickListener(this)
-        radius_custom.setOnEditorActionListener(object: TextView.OnEditorActionListener {
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                if  ((event!=null && event.keyCode === KeyEvent.KEYCODE_ENTER) || (actionId == EditorInfo.IME_ACTION_GO)) {
-                    val rad: String = radius_custom.text.toString()
-                    radius_1km.isClickable = true
-                    radius_2km.isClickable = true
-                    radius_5km.isClickable = true
-                    radius_10km.isClickable = true
-                    getWisata(rad)
-                }
-                return false
+        radius_custom.setOnEditorActionListener { v, actionId, event ->
+            if  ((event != null && event.keyCode == KeyEvent.KEYCODE_ENTER) || (actionId == EditorInfo.IME_ACTION_GO)) {
+                val rad: String = radius_custom.text.toString()
+                radius_1km.isClickable = true
+                radius_2km.isClickable = true
+                radius_5km.isClickable = true
+                radius_10km.isClickable = true
+                getWisata(rad)
             }
-        })
+            false
+        }
     }
 
     override fun onClick(view: View?) {
@@ -91,7 +89,7 @@ class WisataTerdekat : AppCompatActivity(), OnMapReadyCallback, View.OnClickList
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL)
+        mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         getWisata("0")
 //        val userLocation = LatLng(preferenceHelper.lat.toDouble(), preferenceHelper.lon.toDouble())
 //        val cameraPosition = CameraPosition.builder()
@@ -112,8 +110,7 @@ class WisataTerdekat : AppCompatActivity(), OnMapReadyCallback, View.OnClickList
     }
 
     private fun getWisata(radius: String) {
-        val rad: String
-        rad = if(!radius.equals("0")) radius else "2"
+        val rad: String = if(!radius.equals("0")) radius else "2"
         if (!AppUtils.isNetworkAvailable(this)) {
             Toast.makeText(this, "Internet is required!", Toast.LENGTH_SHORT).show()
             return

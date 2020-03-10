@@ -3,7 +3,6 @@ package id.herocode.gaskenjogja.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,12 +24,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,18 +67,21 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         preferenceHelper = new PreferenceHelper(this);
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         if (savedInstanceState == null) {
             homeFragment = HomeFragment.newInstance("Home");
             riwayatFragment = RiwayatFragment.newInstance();
             saldoFragment = SaldoFragment.newInstance();
             akunFragment = AkunFragment.newInstance(preferenceHelper.getName(), preferenceHelper.getEmail());
         }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        item = findViewById(R.id.akses_lokasi);
-        this.item.setVisibility(View.GONE);
+//        item = findViewById(R.id.akses_lokasi);
+//        this.item.setVisibility(View.GONE);
 
         bottomNav = findViewById(R.id.bottom_navigation_menu);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -120,7 +121,7 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
             try {
 //                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000L, 0F, locationListener);
                 locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, null);
-                this.item.setVisibility(View.GONE);
+//                this.item.setVisibility(View.GONE);
             } catch (SecurityException e) {
                 e.printStackTrace();
             }
@@ -145,12 +146,9 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
 
         builder.setMessage(message)
                 .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface d, int id) {
-                                activity.startActivity(new Intent(action));
-                                d.dismiss();
-                            }
+                        (d, id) -> {
+                            activity.startActivity(new Intent(action));
+                            d.dismiss();
                         });
         builder.create().show();
     }
@@ -253,29 +251,23 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
     public void updateSaldo() {
         String URL = API_SALDO + "?id=" + preferenceHelper.getId_user();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject arr = new JSONObject(response);
-                            String sSaldo = arr.getString(AppConstants.Params.SALDO);
-                            int saldo = Integer.parseInt(sSaldo);
-                            preferenceHelper.putSaldo(saldo);
-                            if (saldoFragment.getFragmentManager() != null && homeFragment.getFragmentManager() != null) {
-                                SaldoFragment a = (SaldoFragment) saldoFragment.getFragmentManager().findFragmentByTag("Saldo");
-                                if (a != null) a.update();
-                                HomeFragment h = (HomeFragment) homeFragment.getFragmentManager().findFragmentByTag("Home");
-                                if (h != null) h.update();
-                            }
-                        } catch (JSONException | NullPointerException e) {
-                            e.printStackTrace();
+                response -> {
+                    try {
+                        JSONObject arr = new JSONObject(response);
+                        String sSaldo = arr.getString(AppConstants.Params.SALDO);
+                        int saldo = Integer.parseInt(sSaldo);
+                        preferenceHelper.putSaldo(saldo);
+                        if (saldoFragment.getFragmentManager() != null && homeFragment.getFragmentManager() != null) {
+                            SaldoFragment a = (SaldoFragment) saldoFragment.getFragmentManager().findFragmentByTag("Saldo");
+                            if (a != null) a.update();
+                            HomeFragment h = (HomeFragment) homeFragment.getFragmentManager().findFragmentByTag("Home");
+                            if (h != null) h.update();
                         }
+                    } catch (JSONException | NullPointerException e) {
+                        e.printStackTrace();
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) { }
-                });
+                error -> { });
         Volley.newRequestQueue(this).add(stringRequest);
 
     }
@@ -361,14 +353,10 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
                 }
             };
 
-    public static void trimCache(Context context) {
-        try {
-            File dir = context.getCacheDir();
-            if (dir != null && dir.isDirectory()) {
-                deleteDir(dir);
-            }
-        } catch (Exception e) {
-
+    public static void trimCache(@NotNull Context context) {
+        File dir = context.getCacheDir();
+        if (dir != null && dir.isDirectory()) {
+            deleteDir(dir);
         }
     }
 
@@ -389,16 +377,12 @@ public class DashboardActivity extends AppCompatActivity implements FragmentInte
     }
 
     @Override
-    public void updateTransaksi() {
-        try {
-            if (riwayatFragment.getFragmentManager() != null) {
-                RiwayatFragment r = (RiwayatFragment) riwayatFragment.getFragmentManager().findFragmentByTag("Riwayat");
-                if (r != null) {
-                    r.updateTransaksi();
-                }
+    public void updateTransaksi() throws NullPointerException {
+        if (riwayatFragment.getFragmentManager() != null) {
+            RiwayatFragment r = (RiwayatFragment) riwayatFragment.getFragmentManager().findFragmentByTag("Riwayat");
+            if (r != null) {
+                r.updateTransaksi();
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
     }
 }

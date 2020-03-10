@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,26 +60,20 @@ public class LoginActivity extends AppCompatActivity {
         Button btn_masuk = findViewById(R.id.btn_masuk);
         Button btn_pindah_daftar = findViewById(R.id.btn_pindah_daftar);
 
-        btn_pindah_daftar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                LoginActivity.this.finish();
-            }
+        btn_pindah_daftar.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            LoginActivity.this.finish();
         });
 
-        btn_masuk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    login();
-                } catch (IOException e) {
-                    System.out.print("Error 001: "); e.printStackTrace();
-                } catch (JSONException e) {
-                    System.out.print("Error 002: "); e.printStackTrace();
-                }
+        btn_masuk.setOnClickListener(v -> {
+            try {
+                login();
+            } catch (IOException e) {
+                System.out.print("Error 001: "); e.printStackTrace();
+            } catch (JSONException e) {
+                System.out.print("Error 002: "); e.printStackTrace();
             }
         });
     }

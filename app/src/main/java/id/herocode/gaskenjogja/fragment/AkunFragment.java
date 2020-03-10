@@ -22,9 +22,7 @@ import id.herocode.gaskenjogja.utils.PreferenceHelper;
 public class AkunFragment extends Fragment {
 
     private FragmentActivity listener;
-    private Button btn_keluar;
     private PreferenceHelper preferenceHelper;
-    private TextView tvNama, tvEmail;
 
     public static AkunFragment newInstance(String nama, String email) {
         Bundle args = new Bundle();
@@ -58,20 +56,17 @@ public class AkunFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvNama = view.findViewById(R.id.tv_akun_username);
-        tvEmail = view.findViewById(R.id.tv_akun_email);
+        TextView tvNama = view.findViewById(R.id.tv_akun_username);
+        TextView tvEmail = view.findViewById(R.id.tv_akun_email);
         tvNama.setText(preferenceHelper.getName());
         tvEmail.setText(preferenceHelper.getEmail());
-        btn_keluar = view.findViewById(R.id.btn_keluar);
-        btn_keluar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                preferenceHelper.putIsLogin(false);
-                Intent intent = new Intent(listener, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                listener.finish();
-            }
+        Button btnKeluar = view.findViewById(R.id.btn_keluar);
+        btnKeluar.setOnClickListener(v -> {
+            preferenceHelper.putIsLogin(false);
+            Intent intent = new Intent(listener, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            listener.finish();
         });
     }
 

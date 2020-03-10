@@ -2,13 +2,10 @@ package id.herocode.gaskenjogja.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.RecyclerView
 import id.herocode.gaskenjogja.R
 import id.herocode.gaskenjogja.model.Transaksi
@@ -30,17 +27,17 @@ class TransaksiAdapter(
     override fun onBindViewHolder(holder: TransaksiHolder, position: Int) {
         val transaksi = listTransaksi[position]
         holder.idTransaksi.text = (position+1).toString()
-        holder.transaksi_nama_wisata.text = transaksi.namaWisata
-        holder.transaksi_status.text =
+        holder.transaksiNamaWisata.text = transaksi.namaWisata
+        holder.transaksiStatus.text =
             if (transaksi.statusWisata.equals("BELUM TERPAKAI")) "Belum Terpakai"
             else "Terpakai"
-        if (holder.transaksi_status.text.equals("Terpakai")) {
+        if (holder.transaksiStatus.text == "Terpakai") {
             holder.idTransaksi.setBackgroundColor(Color.rgb(229,57,53))
             holder.idTransaksi.setTextColor(Color.WHITE)
         } else {
             holder.idTransaksi.setBackgroundColor(Color.rgb(118,225,3))
         }
-        holder.transaksi_tanggal.text = transaksi.tanggalWisata
+        holder.transaksiTanggal.text = transaksi.tanggalWisata
     }
 
     override fun getItemCount(): Int {
@@ -51,9 +48,9 @@ class TransaksiAdapter(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         val idTransaksi: TextView = itemView.findViewById(R.id.id_transaksi)
-        val transaksi_nama_wisata: TextView = itemView.findViewById(R.id.transaksi_nama_wisata)
-        val transaksi_status: TextView = itemView.findViewById(R.id.transaksi_status)
-        val transaksi_tanggal: TextView = itemView.findViewById(R.id.tanggal_transaksi)
+        val transaksiNamaWisata: TextView = itemView.findViewById(R.id.transaksi_nama_wisata)
+        val transaksiStatus: TextView = itemView.findViewById(R.id.transaksi_status)
+        val transaksiTanggal: TextView = itemView.findViewById(R.id.tanggal_transaksi)
     }
 
 }

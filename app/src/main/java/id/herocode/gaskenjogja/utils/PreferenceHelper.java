@@ -3,8 +3,6 @@ package id.herocode.gaskenjogja.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.sql.Blob;
-
 public class PreferenceHelper {
     private final String ID_USER = "id_user";
     private final String INTRO = "intro";
@@ -13,17 +11,11 @@ public class PreferenceHelper {
     private final String SALDO = "saldo";
     private final String LAT = "lat";
     private final String LON = "lon";
-    private final String WISATA_NAME = "nama_wisata";
-    private final String WISATA_IMG = "gambar";
-    private final String WISATA_HARGA = "harga";
-    private final String WISATA_ALAMAT = "alamat";
     private SharedPreferences gaskenjogja_prefs;
-    private Context context;
 
     public PreferenceHelper(Context context) {
         gaskenjogja_prefs = context.getSharedPreferences("shared",
                 Context.MODE_PRIVATE);
-        this.context = context;
     }
 
     public void putIsLogin(boolean loginorout) {
@@ -36,7 +28,7 @@ public class PreferenceHelper {
         return gaskenjogja_prefs.getBoolean(INTRO, false);
     }
 
-    public void putName(String loginorout) {
+    void putName(String loginorout) {
         SharedPreferences.Editor edit = gaskenjogja_prefs.edit();
         edit.putString(NAME, loginorout);
         edit.apply();
@@ -46,7 +38,7 @@ public class PreferenceHelper {
         return gaskenjogja_prefs.getString(NAME, "");
     }
 
-    public void putEmail(String loginorout) {
+    void putEmail(String loginorout) {
         SharedPreferences.Editor edit = gaskenjogja_prefs.edit();
         edit.putString(EMAIL, loginorout);
         edit.apply();
@@ -56,7 +48,7 @@ public class PreferenceHelper {
         return gaskenjogja_prefs.getString(EMAIL, "");
     }
 
-    public void putId_user(int loginorout) {
+    void putId_user(int loginorout) {
         SharedPreferences.Editor edit = gaskenjogja_prefs.edit();
         edit.putInt(ID_USER, loginorout);
         edit.apply();

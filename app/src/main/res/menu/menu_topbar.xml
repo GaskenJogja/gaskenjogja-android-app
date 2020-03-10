@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/akses_lokasi"
-        android:title="Akses Lokasi"
+        android:title="@string/akses_lokasi"
         android:icon="@android:drawable/ic_menu_mylocation"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 </menu>

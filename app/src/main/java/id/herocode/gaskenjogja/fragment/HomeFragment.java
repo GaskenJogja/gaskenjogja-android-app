@@ -54,6 +54,7 @@ import id.herocode.gaskenjogja.iface.FragmentInteraction;
 import id.herocode.gaskenjogja.iface.LokasiInteraction;
 import id.herocode.gaskenjogja.model.ModelWisata;
 import id.herocode.gaskenjogja.utils.AppConstants;
+import id.herocode.gaskenjogja.utils.AppUtils;
 import id.herocode.gaskenjogja.utils.PreferenceHelper;
 
 public class HomeFragment extends Fragment implements FragmentInteraction, LokasiInteraction {
@@ -170,54 +171,38 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
             }
         });
 
-        menu_scanqrcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(listener, QRCodeScannerActivity.class);
+        menu_scanqrcode.setOnClickListener(v -> {
+            Intent intent = new Intent(listener, QRCodeScannerActivity.class);
+            startActivity(intent);
+        });
+
+        menu_wisatadekat.setOnClickListener(v -> {
+            if (preferenceHelper.getLAT().equals("0") || preferenceHelper.getLON().equals("0")) {
+                final AlertDialog.Builder builder =
+                        new AlertDialog.Builder(listener);
+                final String message = "Anda belum mengupdate lokasi terkini,\n" +
+                        "Silahkan update lokasi GPS anda terlebih dahulu!";
+
+                builder.setMessage(message)
+                        .setPositiveButton("UPDATE",
+                                (d, id) -> {
+                                    d.dismiss();
+                                    lokInteraction.updateLokasi();
+                                })
+                        .setNegativeButton("BATAL",
+                                (dialog, which) -> dialog.dismiss());
+                builder.create().show();
+                AppUtils.showSimpleProgressDialog(listener, "Update Lokasi", "Loading...", false);
+                lokInteraction.updateLokasi();
+                AppUtils.removeSimpleProgressDialog();
+            } else if (!preferenceHelper.getLAT().equals("0") && !preferenceHelper.getLON().equals("0")) {
+                lokInteraction.updateLokasi();
+                Intent intent = new Intent(listener, WisataTerdekat.class);
                 startActivity(intent);
             }
         });
 
-        menu_wisatadekat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (preferenceHelper.getLAT().equals("0") || preferenceHelper.getLON().equals("0")) {
-                    final AlertDialog.Builder builder =
-                            new AlertDialog.Builder(listener);
-                    final String message = "Anda belum mengupdate lokasi terkini,\n" +
-                            "Silahkan update lokasi GPS anda terlebih dahulu!";
-
-                    builder.setMessage(message)
-                            .setPositiveButton("UPDATE",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface d, int id) {
-                                            d.dismiss();
-                                            lokInteraction.updateLokasi();
-                                        }
-                                    })
-                            .setNegativeButton("BATAL",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                    builder.create().show();
-                } else if (!preferenceHelper.getLAT().equals("0") && !preferenceHelper.getLON().equals("0")) {
-                    lokInteraction.updateLokasi();
-                    Intent intent = new Intent(listener, WisataTerdekat.class);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        refreshSaldo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateSaldo();
-            }
-        });
+        refreshSaldo.setOnClickListener(v -> updateSaldo());
     }
 
     public void update() {
@@ -238,13 +223,13 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
 
     @Override
     public void onStart() {
+        super.onStart();
         name = String.valueOf(preferenceHelper.getName());
         email = String.valueOf(preferenceHelper.getEmail());
         saldo = String.valueOf(preferenceHelper.getSaldo());
         tv_username.setText("Hai " + name);
         tv_email.setText(email);
         tv_saldo.setText("Rp. " + saldo + ",-");
-        super.onStart();
     }
 
     @Override
@@ -277,47 +262,36 @@ public class HomeFragment extends Fragment implements FragmentInteraction, Lokas
     private void loadDataWisata() {
         intListener.updateSaldo();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, API_DATA_WISATA_SORT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            modelWisatas.clear();
-                            JSONObject obj = new JSONObject(response);
-                            JSONArray array = obj.getJSONArray("data");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject wisata = array.getJSONObject(i);
-                                modelWisatas.add(new ModelWisata(
-                                        wisata.getInt("id_wisata"),
-                                        wisata.getString("nama_wisata"),
-                                        wisata.getString("alamat"),
-                                        wisata.getString("jam_buka"),
-                                        wisata.getString("jam_tutup"),
-                                        wisata.getInt("harga"),
-                                        wisata.getString("gambar"),
-                                        wisata.getDouble("lat"),
-                                        wisata.getDouble("lon")
-                                ));
-                            }
-                            wisataAdapter = new CardViewWisataAdapter(listener, modelWisatas);
-                            recyclerView.setAdapter(wisataAdapter);
-
-                            wisataAdapter.setClickItem(new CardViewWisataAdapter.ClickItem() {
-                                @Override
-                                public void itemClicked(@NotNull ModelWisata data) {
-                                    showDataWisata(data);
-                                }
-                            });
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                response -> {
+                    try {
+                        modelWisatas.clear();
+                        JSONObject obj = new JSONObject(response);
+                        JSONArray array = obj.getJSONArray("data");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject wisata = array.getJSONObject(i);
+                            modelWisatas.add(new ModelWisata(
+                                    wisata.getInt("id_wisata"),
+                                    wisata.getString("nama_wisata"),
+                                    wisata.getString("alamat"),
+                                    wisata.getString("jam_buka"),
+                                    wisata.getString("jam_tutup"),
+                                    wisata.getInt("harga"),
+                                    wisata.getString("gambar"),
+                                    wisata.getDouble("lat"),
+                                    wisata.getDouble("lon")
+                            ));
                         }
+                        wisataAdapter = new CardViewWisataAdapter(listener, modelWisatas);
+                        recyclerView.setAdapter(wisataAdapter);
+
+                        wisataAdapter.setClickItem(this::showDataWisata);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                error -> {
 
-                    }
                 }
         );
         Volley.newRequestQueue(listener).add(stringRequest);

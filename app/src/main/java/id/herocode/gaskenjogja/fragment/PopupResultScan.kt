@@ -38,7 +38,7 @@ class PopupResultScan : DialogFragment() {
     private var NAMAWISATA = "nama_wisata"
     private var SALDO_AWAL = 0
     private var SALDO_AKHIR = 0
-    private var IMG: ByteArray? = null
+//    private var IMG: ByteArray? = null
     private lateinit var preferenceHelper: PreferenceHelper
     private lateinit var parseContent: ParseContent
     private lateinit var listener: FragmentActivity
@@ -224,13 +224,13 @@ class PopupResultScan : DialogFragment() {
         object: AsyncTask<Void, Void, String>() {
             override fun doInBackground(params: Array<Void>): String {
                 var response : String?
-                try {
+                response = try{
                     val req = HttpRequest(AppConstants.ServiceType.UPDATE_SALDO)
-                    response = req.prepare(HttpRequest.Method.POST).withData(map).sendAndReadString()
+                    req.prepare(HttpRequest.Method.POST).withData(map).sendAndReadString()
                 } catch (e : IOException) {
-                    response = e.message
+                    e.message
                 } catch (e : Exception) {
-                    response = e.message
+                    e.message
                 }
                 return response.toString()
             }
@@ -261,11 +261,6 @@ class PopupResultScan : DialogFragment() {
                 }
                 return response.toString()
             }
-
-            override fun onPostExecute(result: String) {
-//                println("gaskenjogja-wisata : Sukses")
-                super.onPostExecute(result)
-            }
         }.execute()
     }
 
@@ -273,7 +268,7 @@ class PopupResultScan : DialogFragment() {
         AppUtils.removeSimpleProgressDialog()
         if  (task) {
             parseContent.bayarWisata(response)
-            var msg = parseContent.getMessageBayar(response)
+            val msg = parseContent.getMessageBayar(response)
             Toast.makeText(listener, msg, Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(listener, "Anda harus login terlebih dahulu!", Toast.LENGTH_SHORT).show()

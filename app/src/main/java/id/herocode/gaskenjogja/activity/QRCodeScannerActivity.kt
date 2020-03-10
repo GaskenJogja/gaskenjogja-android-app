@@ -25,8 +25,7 @@ class QRCodeScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandle
     private lateinit var scannerView : ZXingScannerView
     private lateinit var preferenceHelper : PreferenceHelper
     private lateinit var parseContent : ParseContent
-    private val QrCodeTask : Int = 1
-
+    private val qrCodeTask : Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +61,7 @@ class QRCodeScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandle
         when (view?.id) {
             R.id.btn_ulang_scan -> {
                 btn_ulang_scan.visibility = View.GONE
-                scannerView.resumeCameraPreview(this)
+                this.scannerView.resumeCameraPreview(this)
                 initScannerView()
             }
             else -> {
@@ -116,7 +115,7 @@ class QRCodeScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandle
             map[AppConstants.Params.QRCODEDATA] = rawResult.toString()
 
             object : AsyncTask<Void, Void, String>(){
-                protected override fun doInBackground(params:Array<Void>): String {
+                override fun doInBackground(params:Array<Void>): String {
                     var response : String
                     try {
                         val req = HttpRequest(AppConstants.ServiceType.QRCODE_DATA)
@@ -126,8 +125,8 @@ class QRCodeScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandle
                     }
                     return response
                 }
-                protected override fun onPostExecute(response : String) {
-                    onTaskCompleted(response, QrCodeTask)
+                override fun onPostExecute(response : String) {
+                    onTaskCompleted(response, qrCodeTask)
                 }
             }.execute()
         } catch (e : IOException) {
@@ -139,7 +138,7 @@ class QRCodeScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandle
 
     private fun onTaskCompleted(response : String, task : Int) {
         AppUtils.removeSimpleProgressDialog()
-        if (task == QrCodeTask) {
+        if (task == qrCodeTask) {
             var method = 0
             when (parseContent.getMessageQRCode(response)) {
                 "mode_booking" -> {

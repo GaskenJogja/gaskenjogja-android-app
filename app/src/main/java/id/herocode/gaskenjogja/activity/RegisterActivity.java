@@ -6,7 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
+//import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,13 +24,12 @@ import id.herocode.gaskenjogja.utils.AppConstants;
 import id.herocode.gaskenjogja.utils.AppUtils;
 import id.herocode.gaskenjogja.utils.HttpRequest;
 import id.herocode.gaskenjogja.utils.ParseContent;
-import id.herocode.gaskenjogja.utils.PreferenceHelper;
+//import id.herocode.gaskenjogja.utils.PreferenceHelper;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText inp_nama, inp_email, inp_password;
     private ParseContent parseContent;
-    private final int RegTask = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .fitCenter()
                 .into(img_main);
 
-        PreferenceHelper preferenceHelper = new PreferenceHelper(this);
+//        PreferenceHelper preferenceHelper = new PreferenceHelper(this);
         parseContent = new ParseContent(this);
 
         inp_nama = findViewById(R.id.inp_nama);
@@ -54,26 +53,20 @@ public class RegisterActivity extends AppCompatActivity {
         Button btn_daftar = findViewById(R.id.btn_daftar);
         final Button btn_pindah_login = findViewById(R.id.btn_pindah_masuk);
 
-        btn_pindah_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                RegisterActivity.this.finish();
-            }
+        btn_pindah_login.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            RegisterActivity.this.finish();
         });
 
-        btn_daftar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    register();
-                } catch (IOException e) {
-                    System.out.print("Error 01.0: "); e.printStackTrace();
-                } catch (JSONException e) {
-                    System.out.print("Error 01.1: "); e.printStackTrace();
-                }
+        btn_daftar.setOnClickListener(view -> {
+            try {
+                register();
+            } catch (IOException e) {
+                System.out.print("Error 01.0: "); e.printStackTrace();
+            } catch (JSONException e) {
+                System.out.print("Error 01.1: "); e.printStackTrace();
             }
         });
     }
@@ -104,24 +97,22 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(String result) {
-                onTaskCompleted(result, RegTask);
+                onTaskCompleted(result);
             }
         }.execute();
     }
 
-    private void onTaskCompleted(String response, int task) {
+    private void onTaskCompleted(String response) {
         AppUtils.removeSimpleProgressDialog();
-        if (task == RegTask) {
-            if (parseContent.isSuccess(response)) {
-                parseContent.saveInfo(response);
-                Toast.makeText(RegisterActivity.this, "Registrasi Berhasil!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RegisterActivity.this, DashboardActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                this.finish();
-            } else {
-                Toast.makeText(RegisterActivity.this, parseContent.getErrorMessage(response), Toast.LENGTH_SHORT).show();
-            }
+        if (parseContent.isSuccess(response)) {
+            parseContent.saveInfo(response);
+            Toast.makeText(RegisterActivity.this, "Registrasi Berhasil!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegisterActivity.this, DashboardActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            this.finish();
+        } else {
+            Toast.makeText(RegisterActivity.this, parseContent.getErrorMessage(response), Toast.LENGTH_SHORT).show();
         }
     }
 }

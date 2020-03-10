@@ -1,5 +1,6 @@
 package id.herocode.gaskenjogja.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
@@ -50,8 +51,6 @@ class DetailDataWisata : AppCompatActivity(), OnMapReadyCallback, View.OnClickLi
         const val LON = "lon"
     }
 
-
-
     override fun updateLokasi() {
 
     }
@@ -92,12 +91,12 @@ class DetailDataWisata : AppCompatActivity(), OnMapReadyCallback, View.OnClickLi
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        this.mMap = googleMap
 
         val location = LatLng(lat, lon)
         val zoomLevel = 10.0f
-        mMap.addMarker(MarkerOptions().position(location).title(namaWisata))
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
+        this.mMap.addMarker(MarkerOptions().position(location).title(namaWisata))
+        this.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
     }
 
     override fun onClick(view: View?) {
@@ -136,13 +135,13 @@ class DetailDataWisata : AppCompatActivity(), OnMapReadyCallback, View.OnClickLi
         object: AsyncTask<Void,Void,String>() {
             override fun doInBackground(params: Array<Void>): String {
                 var response: String
-                try {
+                response = try {
                     val req = HttpRequest(AppConstants.ServiceType.BOOKING)
-                    response = req.prepare(HttpRequest.Method.POST).withData(map).sendAndReadString()
+                    req.prepare(HttpRequest.Method.POST).withData(map).sendAndReadString()
                 } catch (e : IOException) {
-                    response = e.message.toString()
+                    e.message.toString()
                 } catch (e : Exception) {
-                    response = e.message.toString()
+                    e.message.toString()
                 }
                 return response
             }

@@ -5,14 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -69,7 +65,6 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
     private LinearLayout radio_button, bottom_sheet, payment_bca, payment_alfamart, payment_gopay;
     private RadioGroup rg_nominal;
     private RadioButton nominal;
-    private EditText etNominalSaldo;
     private String saldo;
 
     public static SaldoFragment newInstance() {
@@ -113,7 +108,7 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
         btnTambah = view.findViewById(R.id.btn_tambah_saldo);
         btnKembali = view.findViewById(R.id.btn_batal);
         btnTopup = view.findViewById(R.id.btn_topup_saldo);
-        etNominalSaldo = view.findViewById(R.id.et_tambah_saldo);
+        EditText etNominalSaldo = view.findViewById(R.id.et_tambah_saldo);
         radio_button = view.findViewById(R.id.radio_nominal);
         rg_nominal = view.findViewById(R.id.rg_nominal);
 //        bottom_sheet = listener.findViewById(R.id.bottom_sheet);
@@ -126,56 +121,45 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
         saldo = String.valueOf(preferenceHelper.getSaldo());
         tvSaldo.setText(String.format("Rp. %s,-", saldo));
 
-        InputFilter filter = new InputFilter() {
-            public CharSequence filter(CharSequence source, int start, int end,
-                                       Spanned dest, int dstart, int dend) {
-                for (int i = start; i < end; i++) {
-                    if (!Character.isDigit(source.charAt(i))) { // Accept only digits ; otherwise just return
-                        Toast.makeText(listener,"Invalid Input",Toast.LENGTH_SHORT).show();
-                        return "";
-                    }
+        InputFilter filter = (source, start, end, dest, dstart, dend) -> {
+            for (int i = start; i < end; i++) {
+                if (!Character.isDigit(source.charAt(i))) { // Accept only digits ; otherwise just return
+                    Toast.makeText(listener,"Invalid Input",Toast.LENGTH_SHORT).show();
+                    return "";
                 }
-                return null;
             }
+            return null;
         };
         etNominalSaldo.setFilters(new InputFilter[] { filter });
 
-        btnTambah.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnKembali.setVisibility(View.VISIBLE);
+        btnTambah.setOnClickListener(v -> {
+            btnKembali.setVisibility(View.VISIBLE);
 //                tvInfoSaldo.setVisibility(View.INVISIBLE);
 //                tvSaldo.setVisibility(View.INVISIBLE);
 //                etNominalSaldo.setVisibility(View.VISIBLE);
-                radio_button.setVisibility(View.VISIBLE);
-                btnTopup.setVisibility(View.VISIBLE);
-                btnTambah.setVisibility(View.GONE);
-            }
+            radio_button.setVisibility(View.VISIBLE);
+            btnTopup.setVisibility(View.VISIBLE);
+            btnTambah.setVisibility(View.GONE);
         });
 
-        btnKembali.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnKembali.setVisibility(View.GONE);
+        btnKembali.setOnClickListener(v -> {
+            btnKembali.setVisibility(View.GONE);
 //                tvInfoSaldo.setVisibility(View.VISIBLE);
 //                tvSaldo.setVisibility(View.VISIBLE);
 //                etNominalSaldo.setText(""); etNominalSaldo.setVisibility(View.INVISIBLE);
-                radio_button.setVisibility(View.INVISIBLE);
-                rg_nominal.clearCheck();
-                btnKembali.setVisibility(View.GONE);
-                btnTopup.setVisibility(View.GONE);
-                btnTambah.setVisibility(View.VISIBLE);
-            }
+            radio_button.setVisibility(View.INVISIBLE);
+            rg_nominal.clearCheck();
+            btnKembali.setVisibility(View.GONE);
+            btnTopup.setVisibility(View.GONE);
+            btnTambah.setVisibility(View.VISIBLE);
         });
 
-        btnTopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int selectedId = rg_nominal.getCheckedRadioButtonId();
-                nominal = view.findViewById(selectedId);
-                if(selectedId != -1){
-                    MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
-                    MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.GO_PAY);
+        btnTopup.setOnClickListener(v -> {
+            int selectedId = rg_nominal.getCheckedRadioButtonId();
+            nominal = view.findViewById(selectedId);
+            if(selectedId != -1){
+                MidtransSDK.getInstance().setTransactionRequest(initTransactionRequest());
+                MidtransSDK.getInstance().startPaymentUiFlow(listener, PaymentMethod.GO_PAY);
 
 //                    if (sheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
 //                        bottom_sheet.setVisibility(View.VISIBLE);
@@ -189,27 +173,26 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
 //                    Intent pembayaran = new Intent(listener, MidtransPayment.class);
 //                    pembayaran.putExtra("nominal", Double.parseDouble(nominal.getText().toString().replaceAll("\\D+","")));
 //                    startActivity(pembayaran);
-                } else {
-                    Toast.makeText(listener, "Pilih Jumlah Saldo yang ingin di TopUp", Toast.LENGTH_SHORT).show();
-                }
-                /*
-                if ((etNominalSaldo.getText().toString()).isEmpty()) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        etNominalSaldo.setFocusable(View.FOCUSABLE);
-                    }
-                    Toast.makeText(listener, "Masukkan Jumlah Saldo yang ingin di TopUp", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        topUp();
-                        btnKembali.performClick();
-                    } catch (IOException e) {
-                        System.out.print("Error 001: "); e.printStackTrace();
-                    } catch (JSONException e) {
-                        System.out.print("Error 002: "); e.printStackTrace();
-                    }
-                }
-                 */
+            } else {
+                Toast.makeText(listener, "Pilih Jumlah Saldo yang ingin di TopUp", Toast.LENGTH_SHORT).show();
             }
+            /*
+            if ((etNominalSaldo.getText().toString()).isEmpty()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    etNominalSaldo.setFocusable(View.FOCUSABLE);
+                }
+                Toast.makeText(listener, "Masukkan Jumlah Saldo yang ingin di TopUp", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    topUp();
+                    btnKembali.performClick();
+                } catch (IOException e) {
+                    System.out.print("Error 001: "); e.printStackTrace();
+                } catch (JSONException e) {
+                    System.out.print("Error 002: "); e.printStackTrace();
+                }
+            }
+             */
         });
 
 //        payment_bca.setOnClickListener(new View.OnClickListener() {
@@ -268,7 +251,7 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
     }
 
     private TransactionRequest initTransactionRequest() {
-        Double nomDouble = Double.parseDouble(nominal.getText().toString().replaceAll("\\D+",""));
+        double nomDouble = Double.parseDouble(nominal.getText().toString().replaceAll("\\D+",""));
         TransactionRequest transactionRequestNew = new TransactionRequest(System.currentTimeMillis() + "", nomDouble);
         transactionRequestNew.setCustomerDetails(initCustomerDetails());
         ItemDetails itemDetails = new ItemDetails("1", nomDouble, 1, "Topup-"+nominal.getText().toString().replaceAll("\\D+",""));
@@ -396,9 +379,7 @@ public class SaldoFragment extends Fragment implements FragmentInteraction, Tran
             ).show();
                 try {
                     topUp();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
                 rg_nominal.clearCheck();
